@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class ClientService {
+public class ClientService implements ServiceContract<ClientDetailDto, ClientDto>{
 
     @Autowired
     private ClientRepository clientRepository;
@@ -27,14 +27,14 @@ public class ClientService {
     private AddressMapper addressMapper;
 
     @Transactional
-    public ClientReadDto create(ClientCreateDto dto) {
+    public ClientDetailDto create(ClientDto dto) {
         Client client = clientMapper.toEntity(dto);
         clientRepository.save(client);
         return clientMapper.toReadDto(client);
     }
 
     @Transactional
-    public ClientReadDto update(ClientUpdateDto dto) {
+    public ClientDetailDto update(ClientDto dto) {
         Client clientFound = clientRepository.findById(dto.getId())
                 .orElseThrow(RuntimeException::new);
 
@@ -43,12 +43,12 @@ public class ClientService {
         return clientMapper.toReadDto(client);
     }
 
-    public List<ClientReadDto> findAll() {
+    public List<ClientDetailDto> findAll() {
         List<Client> clients = clientRepository.findAll();
         return clientMapper.toListReadDto(clients);
     }
 
-    public ClientReadDto findById(Long id) {
+    public ClientDetailDto findById(Long id) {
         Client client = clientRepository.findById(id)
                 .orElseThrow(RuntimeException::new);
 
@@ -56,13 +56,13 @@ public class ClientService {
     }
 
     @Transactional
-    public AddressReadDto addAddress(Long clientId, AddressCreateDto dto) {
+    public AddressDetailDto addAddress(Long clientId, AddressDto dto) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(RuntimeException::new);
 
         Address address = addressMapper.toEntity(dto);
 
-        if(client.getAddresses().contains(address)){
+        if (client.getAddresses().contains(address)) {
             throw new RuntimeException();
         }
         client.addAddress(address);
@@ -80,15 +80,15 @@ public class ClientService {
         address.setId(addressId);
 
         var isRemoved = client.getAddresses().remove(address);
-        if(!isRemoved){
+        if (!isRemoved) {
             throw new RuntimeException();
         }
         clientRepository.save(client);
     }
 
     @Transactional
-    public AddressReadDto updateAddress(Long clientId, Long addressId,
-                                        AddressUpdateDto addressDto) {
+    public AddressDetailDto updateAddress(Long clientId, Long addressId,
+                                          AddressDto addressDto) {
 
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(RuntimeException::new);
@@ -98,7 +98,7 @@ public class ClientService {
                 .filter(e -> e.getId().equals(addressId))
                 .findFirst();
 
-        if(addressFound.isEmpty()){
+        if (addressFound.isEmpty()) {
             throw new RuntimeException();
         }
 
@@ -108,7 +108,7 @@ public class ClientService {
     }
 
     @Transactional
-    public Set<AddressReadDto> addAllAddress(Long clientId, Set<AddressCreateDto> addressDtoSet) {
+    public Set<AddressDetailDto> addAllAddress(Long clientId, Set<AddressDto> addressDtoSet) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(RuntimeException::new);
 

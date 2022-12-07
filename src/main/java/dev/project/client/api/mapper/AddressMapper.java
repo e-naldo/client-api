@@ -1,9 +1,8 @@
 package dev.project.client.api.mapper;
 
 import dev.project.client.api.domain.Address;
-import dev.project.client.api.dto.AddressCreateDto;
-import dev.project.client.api.dto.AddressReadDto;
-import dev.project.client.api.dto.AddressUpdateDto;
+import dev.project.client.api.dto.AddressDetailDto;
+import dev.project.client.api.dto.AddressDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class AddressMapper {
 
-    public Address toEntity(AddressCreateDto dto) {
+    public Address toEntity(AddressDto dto) {
         Address address = new Address();
         address.setDescription(dto.getDescription());
         address.setAddressName(dto.getAddressName());
@@ -27,8 +26,7 @@ public class AddressMapper {
         return address;
     }
 
-
-    public Address toUpdateEntity(Address address, AddressUpdateDto dto) {
+    public Address toUpdateEntity(Address address, AddressDto dto) {
         address.setDescription(dto.getDescription());
         address.setAddressName(dto.getAddressName());
         address.setNumber(dto.getNumber());
@@ -42,8 +40,8 @@ public class AddressMapper {
         return address;
     }
 
-    public AddressReadDto toDto(Address address) {
-        AddressReadDto dto = new AddressReadDto();
+    public AddressDetailDto toDto(Address address) {
+        AddressDetailDto dto = new AddressDetailDto();
         dto.setId(address.getId());
         dto.setDescription(address.getDescription());
         dto.setAddressName(address.getAddressName());
@@ -58,11 +56,11 @@ public class AddressMapper {
         return dto;
     }
 
-    public Set<Address> toListEntity(Set<AddressCreateDto> addressDtoSet) {
+    public Set<Address> toListEntity(Set<AddressDto> addressDtoSet) {
         return addressDtoSet.stream().map(this::toEntity).collect(Collectors.toSet());
     }
 
-    public Set<AddressReadDto> toListDto(Set<Address> addressSet) {
+    public Set<AddressDetailDto> toListDto(Set<Address> addressSet) {
         return addressSet.stream().map(this::toDto).collect(Collectors.toSet());
     }
 }
