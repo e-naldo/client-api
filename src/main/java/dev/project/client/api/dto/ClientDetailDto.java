@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientReadDto {
+public class ClientDetailDto extends AbstractDto {
 
     private  Long id;
     private String name;
@@ -21,6 +21,6 @@ public class ClientReadDto {
     private String email;
     private String telephone;
     private LocalDate registrationDate;
-    private Set<AddressReadDto> addresses = new HashSet<>();
+    private Set<AddressDetailDto> addresses = new HashSet<>();
 
 }

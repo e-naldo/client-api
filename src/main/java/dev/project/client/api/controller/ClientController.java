@@ -20,41 +20,41 @@ public class ClientController {
     private ClientService service;
 
     @PostMapping
-    public ResponseEntity<ClientReadDto> create(@RequestBody @Valid ClientCreateDto dto,
-                                                UriComponentsBuilder uriComponentsBuilder) {
-        ClientReadDto clientReadDto = service.create(dto);
+    public ResponseEntity<ClientDetailDto> create(@RequestBody @Valid ClientDto dto,
+                                                  UriComponentsBuilder uriComponentsBuilder) {
+        ClientDetailDto clientReadDto = service.create(dto);
         URI uri = uriComponentsBuilder.path("/api/v1/clients/{id}").buildAndExpand((clientReadDto.getId())).toUri();
         return ResponseEntity.created(uri).body(clientReadDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientReadDto> update(@PathVariable Long id,
-                                                @RequestBody @Valid ClientUpdateDto dto) {
+    public ResponseEntity<ClientDetailDto> update(@PathVariable Long id,
+                                                  @RequestBody @Valid ClientDto dto) {
         if (!id.equals(dto.getId())) {
             return ResponseEntity.badRequest().build();
         }
-        ClientReadDto clientReadDto = service.update(dto);
+        ClientDetailDto clientReadDto = service.update(dto);
         return ResponseEntity.ok(clientReadDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientReadDto>> getAll() {
-        List<ClientReadDto> clientReadDtoList = service.findAll();
+    public ResponseEntity<List<ClientDetailDto>> getAll() {
+        List<ClientDetailDto> clientReadDtoList = service.findAll();
         return ResponseEntity.ok(clientReadDtoList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientReadDto> getById(@PathVariable Long id) {
-        ClientReadDto dto = service.findById(id);
+    public ResponseEntity<ClientDetailDto> getById(@PathVariable Long id) {
+        ClientDetailDto dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/{clientId}/addresses")
-    public ResponseEntity<AddressReadDto> addAddress(@PathVariable Long clientId,
-                                                     @RequestBody AddressCreateDto dto
+    public ResponseEntity<AddressDetailDto> addAddress(@PathVariable Long clientId,
+                                                       @RequestBody AddressDto dto
     ) {
 
-        AddressReadDto addressDto = service.addAddress(clientId, dto);
+        AddressDetailDto addressDto = service.addAddress(clientId, dto);
         return ResponseEntity.ok(addressDto);
     }
 
@@ -66,18 +66,18 @@ public class ClientController {
     }
 
     @PutMapping("/{clientId}/addresses/{addressId}")
-    public ResponseEntity<AddressReadDto> updateAddress(@PathVariable Long clientId,
-                                                        @PathVariable Long addressId,
-                                                        @RequestBody AddressUpdateDto addressDto) {
+    public ResponseEntity<AddressDetailDto> updateAddress(@PathVariable Long clientId,
+                                                          @PathVariable Long addressId,
+                                                          @RequestBody AddressDto addressDto) {
 
-        AddressReadDto addressDto2 = service.updateAddress(clientId, addressId, addressDto);
+        AddressDetailDto addressDto2 = service.updateAddress(clientId, addressId, addressDto);
         return ResponseEntity.ok(addressDto2);
     }
 
     @PostMapping("/{clientId}/addresses/addAll")
-    public ResponseEntity<Set<AddressReadDto>> addAllAddress(@PathVariable Long clientId,
-                                                             @RequestBody Set<AddressCreateDto> addressCreateDtoSet) {
-        Set<AddressReadDto> addressReadDtoSet = service.addAllAddress(clientId, addressCreateDtoSet);
+    public ResponseEntity<Set<AddressDetailDto>> addAllAddress(@PathVariable Long clientId,
+                                                               @RequestBody Set<AddressDto> addressCreateDtoSet) {
+        Set<AddressDetailDto> addressReadDtoSet = service.addAllAddress(clientId, addressCreateDtoSet);
         return ResponseEntity.ok(addressReadDtoSet);
     }
 }

@@ -1,6 +1,5 @@
 package dev.project.client.api.dto;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -15,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ClientUpdateDto {
+public class ClientDto extends AbstractDto {
 
     private Long id;
 
@@ -33,4 +32,6 @@ public class ClientUpdateDto {
 
     @NotBlank
     private String telephone;
+
+    private Set<AddressDto> addresses = new HashSet<>();
 }

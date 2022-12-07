@@ -1,9 +1,8 @@
 package dev.project.client.api.mapper;
 
 import dev.project.client.api.domain.Client;
-import dev.project.client.api.dto.ClientCreateDto;
-import dev.project.client.api.dto.ClientReadDto;
-import dev.project.client.api.dto.ClientUpdateDto;
+import dev.project.client.api.dto.ClientDetailDto;
+import dev.project.client.api.dto.ClientDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -13,7 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class ClientMapper {
 
-    public Client toEntity(ClientCreateDto dto) {
+    public Client toEntity(ClientDto dto) {
         Client client = new Client();
         client.setName(dto.getName());
         client.setDocument(dto.getDocument());
@@ -24,7 +23,7 @@ public class ClientMapper {
         return client;
     }
 
-    public Client toUpdateEntity(Client client, ClientUpdateDto dto) {
+    public Client toUpdateEntity(Client client, ClientDto dto) {
         client.setName(dto.getName());
         client.setDocument(dto.getDocument());
         client.setEmail(dto.getEmail());
@@ -32,8 +31,8 @@ public class ClientMapper {
         return client;
     }
 
-    public ClientReadDto toReadDto(Client client) {
-        ClientReadDto dto = new ClientReadDto();
+    public ClientDetailDto toReadDto(Client client) {
+        ClientDetailDto dto = new ClientDetailDto();
         dto.setId(client.getId());
         dto.setName(client.getName());
         dto.setDocument(client.getDocument());
@@ -44,7 +43,7 @@ public class ClientMapper {
         return dto;
     }
 
-    public List<ClientReadDto> toListReadDto(List<Client> clients) {
+    public List<ClientDetailDto> toListReadDto(List<Client> clients) {
         return clients.stream().map(this::toReadDto).collect(Collectors.toList());
     }
 }
