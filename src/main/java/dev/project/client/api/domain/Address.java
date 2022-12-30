@@ -1,10 +1,6 @@
 package dev.project.client.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +14,11 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
-public class Address extends BaseEntity {
+public class Address {
 
+    @Id
+    private Long id;
     @ManyToOne
-    @JsonIgnore
     private Client client;
 
     private String description;
@@ -47,14 +44,13 @@ public class Address extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Address)) return false;
+        if (!(o instanceof Address address)) return false;
         if (!super.equals(o)) return false;
-        Address address = (Address) o;
-        return Objects.equals(getDescription(), address.getDescription());
+        return Objects.equals(getId(), address.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getDescription());
+        return Objects.hash(super.hashCode(), getId());
     }
 }

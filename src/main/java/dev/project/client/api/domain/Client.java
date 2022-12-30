@@ -29,8 +29,14 @@ public class Client extends BaseEntity {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Address> addresses = new HashSet<>();
 
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+        addresses.forEach(e -> e.setClient(this));
+    }
+
     public void addAddress(Address address) {
-        this.addresses.add(address);
+        address.setId(this.getId() + addresses.size()+1);
+        addresses.add(address);
         address.setClient(this);
     }
 
@@ -39,8 +45,17 @@ public class Client extends BaseEntity {
         this.addresses.addAll(addresses);
     }
 
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
-        addresses.forEach(e -> e.setClient(this));
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+    }
+
+    public Address findAddressById(Long id) {
+        for (Address address : addresses) {
+            if (address.getId().equals(id)) {
+                addresses.remove(address);
+                return address;
+            }
+        }
+        return null;
     }
 }

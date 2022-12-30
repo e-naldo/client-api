@@ -33,5 +33,5 @@ public class ClientDto extends AbstractDto {
     @NotBlank
     private String telephone;
 
-    private Set<AddressDto> addresses = new HashSet<>();
+    private Set<AddressDto> addresses;
 }

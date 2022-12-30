@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class ClientService implements ServiceContract<ClientDetailDto, ClientDto>{
+public class ClientService implements ServiceContract<ClientDetailDto, ClientDto> {
 
     @Autowired
     private ClientRepository clientRepository;
@@ -76,13 +76,14 @@ public class ClientService implements ServiceContract<ClientDetailDto, ClientDto
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(RuntimeException::new);
 
-        Address address = new Address();
-        address.setId(addressId);
+        Address address = client.findAddressById(addressId);
 
-        var isRemoved = client.getAddresses().remove(address);
-        if (!isRemoved) {
+        if (address == null) {
             throw new RuntimeException();
         }
+
+        client.removeAddress(address);
+
         clientRepository.save(client);
     }
 
@@ -117,4 +118,5 @@ public class ClientService implements ServiceContract<ClientDetailDto, ClientDto
         clientRepository.save(client);
         return addressMapper.toListDto(addresses);
     }
+
 }

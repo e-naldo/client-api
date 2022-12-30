@@ -20,8 +20,7 @@ public abstract class BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BaseEntity)) return false;
-        BaseEntity that = (BaseEntity) o;
+        if (!(o instanceof BaseEntity that)) return false;
         return Objects.equals(getId(), that.getId());
     }
 
